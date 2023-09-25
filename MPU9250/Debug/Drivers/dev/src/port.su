@@ -1,0 +1,5 @@
+../Drivers/dev/src/port.c:27:9:DEV_I2CInit	16	static
+../Drivers/dev/src/port.c:54:9:DEV_I2CDeInit	16	static
+../Drivers/dev/src/port.c:71:9:DEV_I2CWrite	24	static
+../Drivers/dev/src/port.c:90:9:DEV_I2CRead	24	static
+../Drivers/dev/src/port.c:107:9:DEV_I2CIsReady	24	static

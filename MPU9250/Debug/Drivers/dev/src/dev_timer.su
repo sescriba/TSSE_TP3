@@ -1,0 +1,3 @@
+../Drivers/dev/src/dev_timer.c:23:9:DEV_TimerInit	24	static
+../Drivers/dev/src/dev_timer.c:42:9:DEV_TimerRead	24	static
+../Drivers/dev/src/dev_timer.c:70:9:DEV_TimerWrite	24	static

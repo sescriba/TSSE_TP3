@@ -1,0 +1,2 @@
+../Core/Src/app_sm.c:16:9:APP_SMInit	16	static
+../Core/Src/app_sm.c:24:9:APP_SMProccess	16	static

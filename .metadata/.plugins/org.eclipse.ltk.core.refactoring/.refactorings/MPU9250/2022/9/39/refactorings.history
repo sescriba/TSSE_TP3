@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;MPU9250/Drivers/API&apos; to &apos;MPU9250&apos;" description="Rename resource &apos;API&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Drivers/API" name="MPU9250" stamp="1663884536794" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;MPU9250/Drivers/MPU9250&apos; to &apos;dev&apos;" description="Rename resource &apos;MPU9250&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Drivers/MPU9250" name="dev" stamp="1663885644993" updateReferences="true"/>
+</session>

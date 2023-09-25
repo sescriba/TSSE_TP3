@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;MPU9250/Drivers/dev/src/dev_delay.c&apos; to &apos;dev_timer.c&apos;" description="Rename resource &apos;dev_delay.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Drivers/dev/src/dev_delay.c" name="dev_timer.c" stamp="1664559431568" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;MPU9250/Drivers/dev/inc/dev_delay.h&apos; to &apos;dev_timer.h&apos;" description="Rename resource &apos;dev_delay.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Drivers/dev/inc/dev_delay.h" name="dev_timer.h" stamp="1664559456755" updateReferences="true"/>
+</session>
