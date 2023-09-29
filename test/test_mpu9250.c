@@ -54,7 +54,7 @@ SPDX-License-Identifier: MIT
 
 /* === Private function implementation ========================================================= */
 
-//- El driver debe setear sus registros de inicializacion via I2C
+//El driver debe setear sus registros de inicializacion via I2C
 void test_iniciar_error(void){
     retType ret = API_OK;
 
@@ -64,6 +64,7 @@ void test_iniciar_error(void){
     TEST_ASSERT_EQUAL(API_ERROR, ret);
 }
 
+//El driver debe setear sus registros de inicializacion via I2C
 void test_iniciar_ok(void){
     retType ret = API_OK;
     I2CStates_t expected_state = I2C_OK;
@@ -94,6 +95,7 @@ void test_iniciar_ok(void){
     TEST_ASSERT_EQUAL(API_OK, ret);
 }
 
+//Una lectura del Giroscopo debe ser valida y estar en el formato X Y Z
 void test_leer_gyro(void){
     retType ret = API_OK;
     axis_t gyro;
@@ -117,6 +119,7 @@ void test_leer_gyro(void){
     TEST_ASSERT_EQUAL(gyro.z, 0);
 }
 
+//Una lectura del acelerometro debe ser valida y estar en el formato X Y Z
 void test_leer_accl(void){
     retType ret = API_OK;
     axis_t accl;
@@ -140,6 +143,7 @@ void test_leer_accl(void){
     TEST_ASSERT_EQUAL(accl.z, 0);
 }
 
+//Una lectura de la temperatura debe ser valida y estar en grados celsius
 void test_leer_temp(void){
     retType ret = API_OK;
     float temp;
