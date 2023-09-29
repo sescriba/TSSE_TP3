@@ -34,9 +34,11 @@
     - +:test/**
     - -:test/support
   :source:
-    - Drivers/dev/src/**
+    - MPU9250/Drivers/dev/src/**
+
   :include:
-    - Drivers/dev/inc/**
+    - MPU9250/Drivers/dev/inc/**
+    - MPU9250/Core/Inc/**
   :support:
     - test/support
   :libraries: []
@@ -60,6 +62,7 @@
   :plugins:
     - :ignore
     - :callback
+    - :array
   :treat_as:
     uint8:    HEX8
     uint16:   HEX16
