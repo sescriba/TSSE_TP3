@@ -1,4 +1,4 @@
-# CESE Protocolos de Comunicación en Sistemas Embebidos
+# CESE Testing de Software en Sistemas Embebidos
 
 ## Driver para módulo IMU MPU9250
 
@@ -17,5 +17,5 @@ El driver es del tipo no bloqueante mediante el uso de interrupciones. A su vez 
         ├── mpu9250.c 
         └── port.c 
 
-### Ejemplo
-Finalmente, se adjunta un ejemplo de aplicación, donde se encuentra implementada una MEF capaz de exponer los valores devueltos mediante UART.
+### Testing
+Para el test del driver se implementan pruebas unitarias a traves del uso de la libreria Unity y se corren mediante la herramienta Ceedling
