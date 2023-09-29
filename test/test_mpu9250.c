@@ -30,10 +30,8 @@ SPDX-License-Identifier: MIT
  * - 
 */
 
-
-
 /** @file
- ** @brief Archivo de test de un Driver de control para un sistema de 16 Leds
+ ** @brief Archivo de test de un Driver de control de un MPU9250
  **/
 
 /* === Headers files inclusions =============================================================== */
@@ -55,10 +53,6 @@ SPDX-License-Identifier: MIT
 /* === Private variable definitions ============================================================ */
 
 /* === Private function implementation ========================================================= */
-
-// void setUp(void){
-//     LedsInit(&puerto_virtual);
-// }
 
 //- El driver debe setear sus registros de inicializacion via I2C
 void test_iniciar_error(void){
@@ -118,6 +112,9 @@ void test_leer_gyro(void){
 
     ret = APP_MPU9250ReadGyro(&gyro);
     TEST_ASSERT_EQUAL(API_OK, ret);
+    TEST_ASSERT_EQUAL(gyro.x, 0);
+    TEST_ASSERT_EQUAL(gyro.y, 0);
+    TEST_ASSERT_EQUAL(gyro.z, 0);
 }
 
 void test_leer_accl(void){
@@ -138,6 +135,9 @@ void test_leer_accl(void){
 
     ret = APP_MPU9250ReadAccl(&accl);
     TEST_ASSERT_EQUAL(API_OK, ret);
+    TEST_ASSERT_EQUAL(accl.x, 0);
+    TEST_ASSERT_EQUAL(accl.y, 0);
+    TEST_ASSERT_EQUAL(accl.z, 0);
 }
 
 void test_leer_temp(void){
@@ -152,5 +152,6 @@ void test_leer_temp(void){
 
     ret = APP_MPU9250ReadTemp(&temp);
     TEST_ASSERT_EQUAL(API_OK, ret);
+    TEST_ASSERT_EQUAL(temp, 21);
 }
 /* === End of documentation ==================================================================== */
