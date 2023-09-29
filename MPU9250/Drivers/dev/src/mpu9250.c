@@ -11,36 +11,11 @@
 
 /* Private define ------------------------------------------------------------*/
 
-//MPU9250 Register set
-#define MPU9250_SLAVEADDR 0xD0 //(0x68<<0x1)
-#define MPU9250_PWR_MGMT_1 0x6B
-#define MPU9250_CONFIG_AD 0x1A
-#define MPU9250_GYRO_CONFIG 0x1B
-#define MPU9250_ACCEL_CONFIG_1 0x1C
-#define MPU9250_ACCEL_CONFIG_2 0x1D
-#define MPU9250_ACCEL_XOUT_H 0x3B
-#define MPU9250_ACCEL_XOUT_L 0x3C
-#define MPU9250_ACCEL_YOUT_H 0x3D
-#define MPU9250_ACCEL_YOUT_L 0x3E
-#define MPU9250_ACCEL_ZOUT_H 0x3F
-#define MPU9250_ACCEL_ZOUT_L 0x40
-#define MPU9250_TEMP_OUT_H 0x41
-#define MPU9250_TEMP_OUT_L 0x42
-#define MPU9250_GYRO_XOUT_H 0x43
-#define MPU9250_GYRO_XOUT_L 0x44
-#define MPU9250_GYRO_YOUT_H 0x45
-#define MPU9250_GYRO_YOUT_L 0x46
-#define MPU9250_GYRO_ZOUT_H 0x47
-#define MPU9250_GYRO_ZOUT_L 0x48
-#define MPU9250_INIT_REGISTERS 6
-#define MPU9250_GYRO_ACCL_REGISTERS 3
-
 //Module scales
 #define ACCL_SCALE (16.0*9.81/32768.0)
 #define GYRO_SCALE (2000.0/32768.0)
 
 /* Exposed variables ---------------------------------------------------------*/
-extern I2CState_t I2C_state;
 
 /* Private function prototypes -----------------------------------------------*/
 static retType gyro_convert(uint16_t axis, float * paxis);
@@ -77,6 +52,7 @@ static MPU9250Register_t MPU9250_AcclValues[MPU9250_GYRO_ACCL_REGISTERS]= {
 retType APP_MPU9250Write(uint8_t addr2write, uint8_t * pdata, uint16_t size){
 
 	retType ret = API_OK;
+	static I2CAddrStep_t I2C_addrStep= I2C_S0;
 
 	if(size <= 0) ret = API_ERROR;
 	if(ret != API_OK) return ret;
@@ -91,19 +67,18 @@ retType APP_MPU9250Write(uint8_t addr2write, uint8_t * pdata, uint16_t size){
 	 *  	- Once IT happened, send data.
 	 *  	- Check I2C interruption to know if the transaction is ready.
 	 */
-	if(I2C_state.api_state != I2C_BUSY && I2C_state.addr_step == I2C_S0){
+	if(DEV_I2CGetState() != I2C_BUSY && I2C_addrStep == I2C_S0){
 		ret = DEV_I2CWrite(MPU9250_SLAVEADDR, &addr2write, 1);
-		I2C_state.api_state = I2C_BUSY;
-		I2C_state.addr_step = I2C_S1;
-	}
-	if(I2C_state.api_state != I2C_BUSY && I2C_state.addr_step == I2C_S1){
-		ret = DEV_I2CWrite(MPU9250_SLAVEADDR, pdata, size);
-		I2C_state.api_state = I2C_BUSY;
-		I2C_state.addr_step = I2C_S2;
+		I2C_addrStep = I2C_S1;
 		return API_BUSY;
 	}
-	if(I2C_state.api_state != I2C_BUSY && I2C_state.addr_step == I2C_S2){
-		I2C_state.addr_step = I2C_S0;
+	if(DEV_I2CGetState() != I2C_BUSY && I2C_addrStep == I2C_S1){
+		ret = DEV_I2CWrite(MPU9250_SLAVEADDR, pdata, size);
+		I2C_addrStep = I2C_S2;
+		return API_BUSY;
+	}
+	if(DEV_I2CGetState() != I2C_BUSY && I2C_addrStep == I2C_S2){
+		I2C_addrStep = I2C_S0;
 		return API_OK;
 	}
 	return API_BUSY;
@@ -120,6 +95,7 @@ retType APP_MPU9250Write(uint8_t addr2write, uint8_t * pdata, uint16_t size){
 retType APP_MPU9250Read(uint8_t addr2read, uint8_t * pdata, uint16_t size){
 
 	retType ret = API_OK;
+	static I2CAddrStep_t I2C_addrStep= I2C_S0;
 
 	if(size == 0) ret = API_ERROR;
 	if(ret != API_OK) return ret;
@@ -134,19 +110,18 @@ retType APP_MPU9250Read(uint8_t addr2read, uint8_t * pdata, uint16_t size){
 	 *  	- Once IT happened, receive data.
 	 *  	- Check I2C interruption to know if the transaction is ready.
 	 */
-	if(I2C_state.api_state != I2C_BUSY && I2C_state.addr_step == I2C_S0){
+	if(DEV_I2CGetState() != I2C_BUSY && I2C_addrStep == I2C_S0){
 		ret = DEV_I2CWrite(MPU9250_SLAVEADDR, &addr2read, 1);
-		I2C_state.api_state = I2C_BUSY;
-		I2C_state.addr_step = I2C_S1;
-	}
-	if(I2C_state.api_state != I2C_BUSY && I2C_state.addr_step == I2C_S1){
-		ret = DEV_I2CRead(MPU9250_SLAVEADDR, pdata, size);
-		I2C_state.api_state = I2C_BUSY;
-		I2C_state.addr_step = I2C_S2;
+		I2C_addrStep = I2C_S1;
 		return API_BUSY;
 	}
-	if(I2C_state.api_state != I2C_BUSY && I2C_state.addr_step == I2C_S2){
-		I2C_state.addr_step = I2C_S0;
+	if(DEV_I2CGetState() != I2C_BUSY && I2C_addrStep == I2C_S1){
+		ret = DEV_I2CRead(MPU9250_SLAVEADDR, pdata, size);
+		I2C_addrStep = I2C_S2;
+		return API_BUSY;
+	}
+	if(DEV_I2CGetState() != I2C_BUSY && I2C_addrStep == I2C_S2){
+		I2C_addrStep = I2C_S0;
 		return API_OK;
 	}
 	return API_BUSY;
@@ -173,7 +148,7 @@ retType APP_MPU9250Init(void){
 	for(i=0; i < MPU9250_INIT_REGISTERS; i++){
 		do{
 		ret = APP_MPU9250Write(MPU9250_InitValues[i].addr, (uint8_t*)&MPU9250_InitValues[i].value, MPU9250_InitValues[i].size);
-		}while(ret == API_BUSY && (I2C_state.api_state == I2C_BUSY || I2C_state.addr_step == I2C_S1));
+		}while(ret != API_OK);
 	}
 	return ret;
 
@@ -195,7 +170,7 @@ retType APP_MPU9250ReadGyro(axis_t * gyro){
 	for(i=0; i < MPU9250_GYRO_ACCL_REGISTERS; i++){
 		do{
 		ret = APP_MPU9250Read(MPU9250_GyroValues[i].addr, (uint8_t*)&aux, MPU9250_GyroValues[i].size);
-		}while(ret == API_BUSY && (I2C_state.api_state == I2C_BUSY || I2C_state.addr_step == I2C_S1));
+		}while(ret != API_OK);
 		MPU9250_GyroValues[i].value = aux;
 	}
 
@@ -222,7 +197,7 @@ retType APP_MPU9250ReadAccl(axis_t * accl){
 	for(i=0; i < MPU9250_GYRO_ACCL_REGISTERS; i++){
 		do{
 		ret = APP_MPU9250Read(MPU9250_AcclValues[i].addr, (uint8_t*)&aux, MPU9250_AcclValues[i].size);
-		}while(ret == API_BUSY && (I2C_state.api_state == I2C_BUSY || I2C_state.addr_step == I2C_S1));
+		}while(ret != API_OK);
 		MPU9250_AcclValues[i].value = aux;
 	}
 
@@ -247,7 +222,7 @@ retType APP_MPU9250ReadTemp(float * temp){
 	//Read Temperature value
 	do{
 		ret = APP_MPU9250Read(MPU9250_TEMP_OUT_H, (uint8_t*)&aux_temp, 2);
-	} while(ret == API_BUSY &&(I2C_state.api_state == I2C_BUSY || I2C_state.addr_step == I2C_S1));
+	} while(ret != API_OK);
 
 
 	//Convert to human scale Temperature value

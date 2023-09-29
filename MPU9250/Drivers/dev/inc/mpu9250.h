@@ -11,6 +11,30 @@
 #ifndef DEV_INC_MPU9250_H_
 #define DEV_INC_MPU9250_H_
 
+//MPU9250 Register set
+#define MPU9250_SLAVEADDR 0xD0 //(0x68<<0x1)
+#define MPU9250_PWR_MGMT_1 0x6B
+#define MPU9250_CONFIG_AD 0x1A
+#define MPU9250_GYRO_CONFIG 0x1B
+#define MPU9250_ACCEL_CONFIG_1 0x1C
+#define MPU9250_ACCEL_CONFIG_2 0x1D
+#define MPU9250_ACCEL_XOUT_H 0x3B
+#define MPU9250_ACCEL_XOUT_L 0x3C
+#define MPU9250_ACCEL_YOUT_H 0x3D
+#define MPU9250_ACCEL_YOUT_L 0x3E
+#define MPU9250_ACCEL_ZOUT_H 0x3F
+#define MPU9250_ACCEL_ZOUT_L 0x40
+#define MPU9250_TEMP_OUT_H 0x41
+#define MPU9250_TEMP_OUT_L 0x42
+#define MPU9250_GYRO_XOUT_H 0x43
+#define MPU9250_GYRO_XOUT_L 0x44
+#define MPU9250_GYRO_YOUT_H 0x45
+#define MPU9250_GYRO_YOUT_L 0x46
+#define MPU9250_GYRO_ZOUT_H 0x47
+#define MPU9250_GYRO_ZOUT_L 0x48
+#define MPU9250_INIT_REGISTERS 6
+#define MPU9250_GYRO_ACCL_REGISTERS 3
+
 /* Includes ------------------------------------------------------------------*/
 #include "types.h"
 #include "port.h"

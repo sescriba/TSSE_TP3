@@ -8,6 +8,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "port.h"
+#include "stm32f4xx_hal_i2c.h"
 
 /* Private define ------------------------------------------------------------*/
 #define I2C_CLOCKSPEED 100000
@@ -16,8 +17,19 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef  hi2c;
-I2CState_t I2C_state;
+I2CStates_t I2C_state;
 /* Exposed Function  ---------------------------------------------------------*/
+
+/**
+ * @brief  I2C Get State
+ * @param
+ * 		void
+ * @retval ret - Return I2C state
+ */
+I2CStates_t DEV_I2CGetState(void){
+	return I2C_state;
+}
+
 /**
  * @brief  I2C Initialization
  * @param
@@ -39,8 +51,7 @@ retType DEV_I2CInit(void){
 
 	//Set configuration and initialize
 	ret |= HAL_I2C_Init(&hi2c);
-	I2C_state.api_state = I2C_OK;
-	I2C_state.addr_step = I2C_S0;
+	I2C_state = I2C_OK;
 	return ret;
 
 }
@@ -75,6 +86,7 @@ retType DEV_I2CWrite(uint16_t slave_addr, uint8_t * pdata, uint16_t size){
 	if(slave_addr == 0 || size == 0) return API_ERROR;
 	//Send a word via I2C
 	ret |= HAL_I2C_Master_Transmit_IT(&hi2c, slave_addr, pdata, size);
+	I2C_state = I2C_BUSY;
 	if(ret != API_OK) return ret;
 	return ret;
 }
@@ -94,6 +106,7 @@ retType DEV_I2CRead(uint16_t slave_addr, uint8_t * pdata, uint16_t size){
 	if(slave_addr == 0 || size == 0) return API_ERROR;
 	//Receive a word via I2C
 	ret |= HAL_I2C_Master_Receive_IT(&hi2c, slave_addr, pdata, size);
+	I2C_state = I2C_BUSY;
 	if(ret != API_OK) return ret;
 	return ret;
 }

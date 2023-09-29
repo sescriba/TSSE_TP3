@@ -13,7 +13,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "types.h"
-#include "stm32f4xx_hal_i2c.h"
 
 /**
   * @brief  I2CStates_t I2C states enum
@@ -32,14 +31,6 @@ typedef enum{
 	I2C_S2,
 }I2CAddrStep_t;
 
-/**
-  * @brief  I2CState_t I2C states structure
-  */
-typedef struct{
-	I2CAddrStep_t addr_step;
-	I2CStates_t api_state;
-}I2CState_t;
-
 
 /* Exposed function prototypes -----------------------------------------------*/
 retType DEV_I2CInit(void);
@@ -47,6 +38,7 @@ retType DEV_I2CDeInit(void);
 retType DEV_I2CWrite(uint16_t slave_addr, uint8_t * pdata, uint16_t size);
 retType DEV_I2CRead(uint16_t slave_addr, uint8_t * pdata, uint16_t size);
 retType DEV_I2CIsReady(uint16_t slave_addr);
+I2CStates_t DEV_I2CGetState(void);
 
 
 #endif /* DEV_INC_PORT_H_ */
